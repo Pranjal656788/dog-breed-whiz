@@ -75,9 +75,9 @@ const quizQuestions = [
     id: "budget",
     question: "What's your monthly budget for dog care?",
     options: [
-      { value: "low", label: "Under $100", icon: "💰" },
-      { value: "moderate", label: "$100-300", icon: "💵" },
-      { value: "high", label: "$300+", icon: "💸" },
+      { value: "low", label: "Under ₹8,000", icon: "💰" },
+      { value: "moderate", label: "₹8,000-25,000", icon: "💵" },
+      { value: "high", label: "₹25,000+", icon: "💸" },
     ]
   },
 ];
