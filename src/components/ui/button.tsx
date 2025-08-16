@@ -18,6 +18,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        hero: "bg-gradient-to-r from-hero to-accent text-hero-foreground hover:shadow-lg hover:scale-105 transition-all duration-300 font-semibold text-lg px-8 py-6 h-auto",
+        quiz: "bg-card border-2 border-border hover:border-primary hover:bg-secondary/50 text-card-foreground transition-all duration-200",
       },
       size: {
         default: "h-10 px-4 py-2",
