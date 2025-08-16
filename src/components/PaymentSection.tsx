@@ -32,7 +32,7 @@ export const PaymentSection = ({ onPaymentComplete }: PaymentSectionProps) => {
             <div className="bg-muted/50 rounded-lg p-4 space-y-2">
               <div className="flex justify-between items-center">
                 <span>AI-Powered Breed Match</span>
-                <span className="font-semibold">$1.00</span>
+                <span className="font-semibold">₹75</span>
               </div>
               <div className="text-sm text-muted-foreground">
                 • Personalized breed recommendation
@@ -50,7 +50,7 @@ export const PaymentSection = ({ onPaymentComplete }: PaymentSectionProps) => {
               className="w-full"
               onClick={handlePayment}
             >
-              Get My Match for $1 💳
+              Get My Match for ₹75 💳
             </Button>
             
             <p className="text-xs text-center text-muted-foreground">
