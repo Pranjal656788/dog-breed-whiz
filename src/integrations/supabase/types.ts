@@ -14,7 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_results: {
+        Row: {
+          breed: string
+          created_at: string
+          id: string
+          quiz_id: string
+          reasoning: string
+          traits: Json
+        }
+        Insert: {
+          breed: string
+          created_at?: string
+          id?: string
+          quiz_id: string
+          reasoning: string
+          traits: Json
+        }
+        Update: {
+          breed?: string
+          created_at?: string
+          id?: string
+          quiz_id?: string
+          reasoning?: string
+          traits?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_results_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_answers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_answers: {
+        Row: {
+          answers: Json
+          created_at: string
+          id: string
+        }
+        Insert: {
+          answers: Json
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          answers?: Json
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
