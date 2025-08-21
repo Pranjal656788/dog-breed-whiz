@@ -10,6 +10,7 @@ interface ResultSectionProps {
     breed: string;
     traits: string[];
     reasoning: string;
+    image?: string;
   } | null;
   onRestartQuiz: () => void;
 }
@@ -20,7 +21,7 @@ export const ResultSection = ({ answers, aiResult, onRestartQuiz }: ResultSectio
     if (aiResult) {
       return {
         name: aiResult.breed,
-        image: sampleDog,
+        image: aiResult.image || sampleDog, // Use AI-generated image or fallback
         traits: aiResult.traits,
         description: aiResult.reasoning
       };

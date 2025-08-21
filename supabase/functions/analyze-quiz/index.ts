@@ -102,31 +102,52 @@ Consider their specific lifestyle and provide a personalized recommendation.`;
       throw new Error('Invalid AI response structure');
     }
 
-    // Store the result in the database
-    const { data: insertResult, error: insertError } = await supabase
-      .from('ai_results')
-      .insert({
-        quiz_id,
-        breed: parsedResult.breed,
-        traits: parsedResult.traits,
-        reasoning: parsedResult.reasoning
+    // Store the result in the database and generate breed image
+    const [insertResult, imageResult] = await Promise.all([
+      supabase
+        .from('ai_results')
+        .insert({
+          quiz_id,
+          breed: parsedResult.breed,
+          traits: parsedResult.traits,
+          reasoning: parsedResult.reasoning
+        })
+        .select()
+        .single(),
+      
+      // Generate breed-specific image
+      fetch(`${supabaseUrl}/functions/v1/generate-dog-image`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ breed: parsedResult.breed })
       })
-      .select()
-      .single();
+    ]);
 
-    if (insertError) {
-      console.error('Database insert error:', insertError);
-      throw new Error(`Failed to save result: ${insertError.message}`);
+    if (insertResult.error) {
+      console.error('Database insert error:', insertResult.error);
+      throw new Error(`Failed to save result: ${insertResult.error.message}`);
     }
 
-    console.log('Result saved successfully:', insertResult);
+    let breedImage = null;
+    if (imageResult.ok) {
+      const imageData = await imageResult.json();
+      if (imageData.success) {
+        breedImage = imageData.image;
+      }
+    }
+
+    console.log('Result saved successfully:', insertResult.data);
 
     return new Response(JSON.stringify({
       success: true,
       result: {
         breed: parsedResult.breed,
         traits: parsedResult.traits,
-        reasoning: parsedResult.reasoning
+        reasoning: parsedResult.reasoning,
+        image: breedImage
       }
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
