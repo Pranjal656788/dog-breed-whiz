@@ -79,12 +79,21 @@ Consider their specific lifestyle and provide a personalized recommendation.`;
     
     console.log('OpenAI response:', aiResponse);
 
-    // Parse the JSON response
+    // Parse the JSON response - handle markdown code blocks
     let parsedResult;
     try {
-      parsedResult = JSON.parse(aiResponse);
+      // Remove markdown code blocks if present
+      let cleanResponse = aiResponse.trim();
+      if (cleanResponse.startsWith('```json')) {
+        cleanResponse = cleanResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+      } else if (cleanResponse.startsWith('```')) {
+        cleanResponse = cleanResponse.replace(/^```\s*/, '').replace(/\s*```$/, '');
+      }
+      
+      parsedResult = JSON.parse(cleanResponse);
     } catch (error) {
       console.error('Failed to parse OpenAI response:', error);
+      console.error('Raw response:', aiResponse);
       throw new Error('Invalid AI response format');
     }
 
