@@ -6,15 +6,29 @@ import sampleDog from "@/assets/sample-dog.jpg";
 
 interface ResultSectionProps {
   answers: Record<string, string>;
+  aiResult?: {
+    breed: string;
+    traits: string[];
+    reasoning: string;
+  } | null;
   onRestartQuiz: () => void;
 }
 
-export const ResultSection = ({ answers, onRestartQuiz }: ResultSectionProps) => {
-  // Simple breed matching logic based on answers
+export const ResultSection = ({ answers, aiResult, onRestartQuiz }: ResultSectionProps) => {
+  // Use AI result if available, otherwise fallback to simple logic
   const getBreedRecommendation = () => {
+    if (aiResult) {
+      return {
+        name: aiResult.breed,
+        image: sampleDog,
+        traits: aiResult.traits,
+        description: aiResult.reasoning
+      };
+    }
+
+    // Fallback logic if AI result is not available
     const { activity, homeSize, sizePreference, experience, timeAtHome } = answers;
     
-    // Basic matching logic - in real app this would be AI-powered
     if (activity === "high" && sizePreference === "large") {
       return {
         name: "Golden Retriever",
@@ -53,10 +67,10 @@ export const ResultSection = ({ answers, onRestartQuiz }: ResultSectionProps) =>
       <div className="max-w-2xl mx-auto w-full text-center">
         <div className="mb-8">
           <h2 className="text-4xl font-bold text-foreground mb-4">
-            🎉 Paw-some Choice!
+            🎉 {aiResult ? 'AI-Matched' : 'Paw-some'} Choice!
           </h2>
           <p className="text-xl text-muted-foreground">
-            Based on your answers, here's your perfect dog match:
+            {aiResult ? 'Our AI analyzed your lifestyle and found your perfect match:' : 'Based on your answers, here\'s your perfect dog match:'}
           </p>
         </div>
 
